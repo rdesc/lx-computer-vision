@@ -17,4 +17,5 @@
         ".dtproject": true
     },
     "workbench.tree.indent": 24
+    "http.proxyStrictSSL": false
 }
