@@ -1,48 +1,40 @@
-# **Learning Experience (LX): <LX_TITLE_HERE>**
+<p align="center">
+<img src="./assets/images/dtlogo.png" alt="Duckietown Logo" width="50%">
+</p>
 
-# About these activities
+# **Learning Experience (LX): Computer Vision **
 
-<DESCRIPTION_HERE>
-
-In this learning experience, you will ... **TODO: Describe the LX activities and outcome here**
-
-This learning experience is provided by the Duckietown team and can be run on Duckiebots. Visit us at the 
-[Duckietown Website](https://www.duckietown.com) for more learning materials, documentation, and demos.
-
-For guided setup instructions, lecture content, and more related to this LX, see **TODO: Add course link here**.
-
-## Grading challenge
-
-**TODO: Add optional challenge link or remove the `Grading challenge` section**
 
 # Instructions
 
-**TODO: Update Step 1. to match your learner setup**
-
-**NOTE:** All commands below are intended to be executed from the root directory of this exercise (i.e., the directory containing this README).
+**NOTE:** All commands below are intended to be executed from the root directory of this exercise (i.e., the directory containing this `README`).
 
 
 ## 1. Make sure your exercise is up-to-date
 
 Update your exercise definition and instructions,
 
-    git pull upstream <your upstream branch>
+    git pull upstream ente
 
-**NOTE:** Example instructions to fork a repository and configure to pull from upstream can be found in the [duckietown-lx repository README](https://github.com/duckietown/duckietown-lx/blob/mooc2022/README.md).
+**NOTE:** to pull from upstream, you need to have completed the instructions in the [duckietown-lx repository README](https://github.com/duckietown/duckietown-lx/blob/mooc2022/README.md) to *fork* this repository.
 
 
 ## 2. Make sure your system is up-to-date
 
 - 💻 Always make sure your Duckietown Shell is updated to the latest version. See [installation instructions](https://github.com/duckietown/duckietown-shell)
 
+This exercise is meant to be run with the `ente` version of the shell commands. You can switch to that version with `dts profile switch ente`. 
+
 - 💻 Update the shell commands: `dts update`
 
 - 💻 Update your laptop/desktop: `dts desktop update`
 
-- 🚙 Update your Duckiebot: `dts duckiebot update ROBOTNAME` (where `ROBOTNAME` is the name of your Duckiebot chosen during the initialization procedure.)
+- 🚙 Update your Duckiebot: `dts duckiebot update ROBOTNAME` (where `ROBOTNAME` is the name of your (real or virtual - more on this later) Duckiebot chosen during the initialization procedure.)
+
 
 
 ## 3. Work on the exercise
+
 
 ### Launch the code editor
 
@@ -67,87 +59,73 @@ Inside the code editor, use the navigator sidebar on the left-hand side to navig
 Follow the instructions on the notebook and work through the notebooks in sequence.
 
 
-### 💻 Testing in simulation
+### Building your code
 
-To test in simulation, use the command
-
-    $ dts code workbench --sim
-
-There will be two URLs popping up to open in your browser: one is the direct view of the
-simulated environment. The other is VNC and only useful for some exercises, follow the instructions
-in the notebooks to see if you need to access VNC.
-
-This simulation test is just that, a test. Don't trust it fully. If you want a more accurate
-metric of performance, continue reading to the `Perform local evaluation` section below.
-
-
-### 🚙 Testing on a physical robot
-
-You can test your agent on the robot using the command,
-
-    dts code workbench --duckiebot YOUR_DUCKIEBOT
-
-This is the modality "everything runs on the robot".
-
-You can also test using
-
-    dts code workbench --duckiebot YOUR_DUCKIEBOT --local 
-
-This is the modality "drivers running on the robot, agent runs on the laptop."
-
-
-### 📽 Perform local evaluation
-
-We suggest you evaluate your work locally before submitting your solution.
-You can do so by running the following command,
-
-    dts code evaluate
-
-This should take a few minutes.
-This is not supposed to be an interactive process: just let it run, and when you return,
-you will find the output in a folder, including videos, and trajectories, and all the statistics
-you would usually find on the website.
-
-
-### 📬 Submit your solution
-
-When you are ready to submit your homework, use the following command,
-
-    dts code submit
-
-This will package all your code and send it to the Duckietown servers for evaluation.
-
-
-## Troubleshooting
-
-
-If an error of this form occurs
-
-```bash
-Traceback (most recent call last):
-  File "/usr/local/lib/python3.8/dist-packages/duckietown_challenges_cli/cli.py", line 76, in dt_challenges_cli_main
-    dt_challenges_cli_main_(args=args, sections=sections, main_cmd="challenges")
-  File "/usr/local/lib/python3.8/dist-packages/duckietown_challenges_cli/cli.py", line 203, in dt_challenges_cli_main_
-    f(rest, environment)
-  File "/usr/local/lib/python3.8/dist-packages/duckietown_challenges_cli/cli_submit.py", line 165, in dt_challenges_cli_submit
-    br = submission_build(
-  File "/usr/local/lib/python3.8/dist-packages/duckietown_challenges_cli/cmd_submit_build.py", line 41, in submission_build
-    raise ZException(msg, available=list(credentials))
-zuper_commons.types.exceptions.ZException: Credentials for registry docker.io not available
-available:
-```
-
-you need to log into docker using `dts`. Use this command:
+You can build your code with 
 
 ```
-dts challenges config --docker-username <USERNAME> --docker-password <PASSWORD>
+dts code build -R ROBOT_NAME
+```
+
+This will build a docker image with your code compiled inside - you should your ROS node get built during the process. 
+
+
+### Testing with Duckiematrix
+
+In order to test your code in the Duckiematrix you will need a virtual robot. You can create one with the command:
+
+```
+dts duckiebot virtual create [VIRTUAL_ROBOT_NAME]
+```
+
+where `[VIRTUAL_ROBOT_NAME]` can be anything you like (but remember it for later).
+
+Then you can start your virtual robot with the command:
+
+```
+dts duckiebot virtual start [VIRTUAL_ROBOT_NAME]
+```
+
+You should see it with a status `Booting` and finally `Ready` if you look at `dts fleet discover`: 
+
+```
+     | Hardware |   Type    | Model |  Status  | Hostname 
+---  | -------- | --------- | ----- | -------- | ---------
+vbot |  virtual | duckiebot | DB21J |  Ready   | vbot.local
+```
+
+Now that your virtual robot is ready you can start the Duckiematrix. From this exercise directory do:
+
+```
+dts code start_matrix
+```
+
+You should see the Unity-based Duckiematrix simulator start up. 
+
+
+### 💻 Testing 
+
+
+To test your code in the duckiematrix you can do:
+
+```
+dts code workbench -m -R [VIRTUAL_ROBOT_NAME]
+```
+
+and to test your code on your real Duckiebot you can do:
+
+```
+dts code workbench -R [ROBOT_NAME]
 ```
 
 
-## Retire obsolete submissions
+In another terminal, you can launch the `noVNC` viewer for this exercise which can be useful to send commands to the robot and view the odometry that you calculating in the RViZ window. 
 
-Note that you can "retire" submissions that you know are wrong.
-You can do this through [the Duckietown Challenges website](https://challenges.duckietown.org/).
+```
+dts code vnc -R [ROBOT_NAME]
+```
 
-To do so, login using your token, then find the submission you want to retire from the list of submission
-in your user profile page. Use the button "retire" to the right of the submission record line.
+where `[ROBOT_NAME]` could be the real or the virtual robot (use whichever you ran the `dts code workbench` and `dts code build` command with).
+
+Now you can proceed to the [first notebook](./notebooks/01-Pinhole-Camera/pinhole_camera_matrix.ipynb).
+
