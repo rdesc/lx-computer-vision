@@ -94,7 +94,7 @@ class UnitTestDLM:
         ax6.imshow(right_masked_img * img, cmap="gray")
         ax6.set_title("Mask (Right)"), ax6.set_xticks([]), ax6.set_yticks([])
 
-        imgbgr = cv2.imread("../../assets/images/visual_control/pic12.png")
+        imgbgr = cv2.imread("../../assets/images/visual_control/turn.png")
 
         img = cv2.cvtColor(imgbgr, cv2.COLOR_BGR2GRAY)
 
